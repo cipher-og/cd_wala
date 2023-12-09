@@ -1,5 +1,6 @@
 import sqlite3
 # Run pip3 install sqlite3 
+# pip install --upgrade googletrans==4.0.0-rc1
 # Create a connection to a new database or connect to an existing one
 conn = sqlite3.connect('destinations.db')
 
