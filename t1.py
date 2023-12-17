@@ -1,61 +1,52 @@
 import tkinter as tk
 from tkinter import ttk
+import sqlite3
+import pandas as pd
+
 
 # Create a new Tkinter window
 window = tk.Tk()
-
+global var1
 label = tk.Label(window, text="Please enter your input:")
 label.pack()
 # Add your code here to customize the window
 text_box = tk.Entry(window)
 text_box.pack()
 
+
+def create_connection(db_file):
+    """Create a database connection to a SQLite database."""
+    conn = None
+    try:
+        conn = sqlite3.connect(db_file)
+        return conn
+    except sqlite3.Error as e:
+        print(e)
+    return conn
+con=create_connection("destinations.db")
+# Replace MySQL connection with SQLite3 connection
+conn = create_connection('travel_app.db')
+
+
+df = pd.read_sql_query("SELECT * FROM destinations",con)
+#
+data=df.to_dict(orient='rows')
+
 # Define global variables
 user_budget = 0
 season = ""
-vacation_spots = {
-    "Beach Paradise": {"budget": 10000, "season": ["summer"], "activities": ["beach"]},
-    "Mountain Retreat": {
-        "budget": 80000,
-        "season": ["winter", "spring"],
-        "activities": ["hiking", "skiing"],
-    },
-    "City Exploration": {
-        "budget": 12000,
-        "season": ["all"],
-        "activities": ["sightseeing", "cultural experiences"],
-    },
-    "Tropical Adventure": {
-        "budget": 15000,
-        "season": ["summer", "spring"],
-        "activities": ["snorkeling", "hiking"],
-    },
-    "Ski Resort Getaway": {
-        "budget": 90000,
-        "season": ["winter"],
-        "activities": ["skiing", "snowboarding"],
-    },
-    "Historical Tour": {
-        "budget": 11000,
-        "season": ["all"],
-        "activities": ["historical sites", "guided tours"],
-    },
-    "Desert Expedition": {
-        "budget": 130000,
-        "season": ["spring", "fall"],
-        "activities": ["camel rides", "stargazing"],
-    },
-}
-
+vacation_spots = data
+#print(vacation_spots[0])
 
 def suggest_vacation_spot(budget, season):
     suggested_spots = []
-    for spot, details in vacation_spots.items():
-        if details["budget"] <= budget and (
-            season in details["season"] or "all" in details["season"]
+    #print(vacation_spots)
+    for i in vacation_spots:
+        if i.get('budgetf') >= budget and (
+            season in i.get('season') or "all" in i.get('season')
         ):
-            suggested_spots.append(spot)
-    return suggested_spots
+            suggested_spots.append(i.get('name'))
+    return str(suggested_spots)
 
 
 def retrieve_input():
@@ -72,19 +63,23 @@ def retrieve_input():
         print(
             "Based on your preferences, we suggest these vacation spots:", suggestions
         )
+        var1 = f"Based on your preferences, we suggest these vacation spots: {suggestions}"
         # Create and configure the label in the new window
         label = tk.Label(
             window,
-            text=f"Based on your preferences, we suggest these vacation spots: {suggestions}",
+            text=var1
         )
         label.pack()
     else:
-        print("Sorry, we couldn't find a matching vacation spot.")
+        var1 = "Sorry, we couldn't find a matching vacation spot."
+        print(var1)
         # Create and configure the label in the new window
         label = tk.Label(
-            window, text=f"Sorry, we couldn't find a matching vacation spot."
+            window, text=var1
         )
         label.pack()
+    import bakchodi
+    bakchodi.main(var1=var1)
 
 
 variable = tk.StringVar(window)
@@ -126,3 +121,4 @@ new_window = tk.Toplevel(window)
 label.pack()
 
 window.mainloop()
+window.destroy()
