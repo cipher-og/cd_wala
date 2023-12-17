@@ -632,16 +632,30 @@ def rand():
 
 
 
-def main(var1):
+def main():
     root = Tk()
     # root=Tk()
     root.title('Travel akinator')
     root.minsize(width=1530, height=1800)
     root.maxsize(width=1500, height=1800)
-    
-    label = tk.Label(window,text=var1)
-    label.pack()
-
+    '''if suggestions:
+        print(
+            "Based on your preferences, we suggest these vacation spots:", suggestions
+        )
+        # Create and configure the label in the new window
+        label = tk.Label(
+            window,
+            text=f"Based on your preferences, we suggest these vacation spots: {suggestions}",
+        )
+        label.pack()
+    else:
+        print("Sorry, we couldn't find a matching vacation spot.")
+        # Create and configure the label in the new window
+        label = tk.Label(
+            window, text=f"Sorry, we couldn't find a matching vacation spot."
+        )
+        label.pack()'''
+        
     root.configure(bg="grey94")
     l1 = Label(root, text='Travel akinator', font=("Helvetica", 20, "bold"), fg='black', bg="light cyan")
     l1.place(x=650, y=10)
