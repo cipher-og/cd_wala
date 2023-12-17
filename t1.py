@@ -6,12 +6,12 @@ import pandas as pd
 
 # Create a new Tkinter window
 window = tk.Tk()
-global var1
-label = tk.Label(window, text="Please enter your input:")
-label.pack()
+window.geometry('600x600')
+window.configure(bg='Cornflower blue')
+labell=tk.Label(window,text="TRAVEL AKINATOR",fg="Red",bg='Cornflower blue',font=("Times New Roman",40)).place(x='60',y='50')
+label = tk.Label(window, text="Please enter your input:",font=('Geneva',15)).place(x='210',y='210')
 # Add your code here to customize the window
 text_box = tk.Entry(window)
-text_box.pack()
 
 
 def create_connection(db_file):
@@ -48,8 +48,9 @@ def suggest_vacation_spot(budget, season):
             suggested_spots.append(i.get('name'))
     return str(suggested_spots)
 
-
+suggestions=''
 def retrieve_input():
+    global suggestions
     input_value = text_box.get()
     selected_option = variable.get()
     # Store the values in global variables
@@ -58,29 +59,44 @@ def retrieve_input():
     user_budget = int(input_value)
     season = selected_option
     suggestions = suggest_vacation_spot(user_budget, season)
-
     if suggestions:
         print(
             "Based on your preferences, we suggest these vacation spots:", suggestions
         )
-        var1 = f"Based on your preferences, we suggest these vacation spots: {suggestions}"
         # Create and configure the label in the new window
         label = tk.Label(
             window,
-            text=var1
+            text=f"Based on your preferences, we suggest these vacation spots: {suggestions}",
         )
         label.pack()
     else:
-        var1 = "Sorry, we couldn't find a matching vacation spot."
-        print(var1)
+        print("Sorry, we couldn't find a matching vacation spot.")
         # Create and configure the label in the new window
         label = tk.Label(
-            window, text=var1
+            window, text=f"Sorry, we couldn't find a matching vacation spot."
         )
         label.pack()
-    import bakchodi
-    bakchodi.main(var1=var1)
-
+    
+import bakchodi
+bakchodi.main()
+print(suggestions)
+if suggestions:
+    print(
+        "Based on your preferences, we suggest these vacation spots:", suggestions
+    )
+    # Create and configure the label in the new window
+    label = tk.Label(
+        window,
+        text=f"Based on your preferences, we suggest these vacation spots: {suggestions}",
+    )
+    label.pack()
+else:
+    print("Sorry, we couldn't find a matching vacation spot.")
+    # Create and configure the label in the new window
+    label = tk.Label(
+    window, text=f"Sorry, we couldn't find a matching vacation spot."
+    )
+    label.pack()
 
 variable = tk.StringVar(window)
 
@@ -90,19 +106,18 @@ options = [
     "Summer",
     "Spring",
     "Fall",
-    "Winter",
+    "Winter", 
 ]
 
 # Set the default value for the dropdown menu
 variable.set(options[0])
 
 # Create the dropdown menu
-dropdown = tk.OptionMenu(window, variable, *options)
-dropdown.pack()
+dropdown = tk.OptionMenu(window, variable, *options).place(x='190',y='250')
 
 
-submit_button = tk.Button(window, text="Submit", command=retrieve_input)
-submit_button.pack()
+
+submit_button = tk.Button(window, text="Submit", command=retrieve_input).place(x='280',y='290')
 
 label = tk.Label(window, text="")
 label.pack()
